@@ -1,18 +1,12 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Starter code for the Online Store workshop.
- * Learners will complete the TODO sections to make the program work.
- * <p>
- * What is already done for you: the two lists, the Home Screen loop and
- * the method headers. Each TODO says what that method has to do.
- * Product.java is complete; products.csv sits at the project root.
- * You will need extra imports (for example java.io.BufferedReader,
- * java.io.FileReader, java.io.IOException) as you fill the TODOs in.
- */
+
 public class Store {
 
     public static void main(String[] args) {
@@ -51,7 +45,6 @@ public class Store {
         }
         scanner.close();
     }
-
     /**
      * Reads product data from a file and populates the inventory list.
      * File format (pipe-delimited), the first line is a header row:
@@ -61,19 +54,37 @@ public class Store {
      * AV1051|JBL Bluetooth Speaker|89.95|Audio Video
      */
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
-        // TODO: skip the header line, then read each line, split on "|",
-        //       create a Product object, and add it to the inventory list
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+            String csvLine;
+            boolean isHeader = true;
+
+            while ((csvLine = bufferedReader.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+
+                String[] token = csvLine.split("\\|");
+                if (token.length == 4) {
+                    String SKU = token[0].trim();
+                    String productName = token[1].trim();
+                    double productPrice = Double.parseDouble(token[2].trim());
+                    String department = token[3].trim();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Sorry, an error occured 1. ");
+        }
     }
 
-    /**
-     * Displays all products and lets the user add one to the cart.
-     * Typing X returns to the main menu.
-     */
     public static void displayProducts(ArrayList<Product> inventory,
                                        ArrayList<Product> cart,
                                        Scanner scanner) {
-        // TODO: show each product (id, name, price),
-        //       prompt for an id, find that product, add to cart
+
+     //   System.out.println("\n ==== Available Products ==== ");
+        //for (Product product : inventory) {
+     //       System.out.println(product);
+    //    }
     }
 
     /**
