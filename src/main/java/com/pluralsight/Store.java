@@ -179,7 +179,7 @@ public class Store {
         cart.clear();
 
     }
-    /*public static Product findProductById(String id, ArrayList<Product> inventory) {
+    public static Product findProductById(String id, ArrayList<Product> inventory) {
         for (Product product : inventory) {
             if (product.getSKU().equalsIgnoreCase(id.trim())) {
                 return product;
