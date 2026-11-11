@@ -34,7 +34,7 @@ public class Store {
                 continue;
             }
             choice = scanner.nextInt();
-            scanner.nextLine();                     // clear newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1 -> displayProducts(inventory, cart, scanner);
@@ -43,16 +43,10 @@ public class Store {
                 default -> System.out.println("Invalid choice!");
             }
         }
-        scanner.close();
+
     }
-    /**
-     * Reads product data from a file and populates the inventory list.
-     * File format (pipe-delimited), the first line is a header row:
-     * SKU|Product Name|Price|Department
-     * <p>
-     * Example line:
-     * AV1051|JBL Bluetooth Speaker|89.95|Audio Video
-     */
+
+
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             String csvLine;
@@ -73,7 +67,7 @@ public class Store {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Sorry, an error occured 1. ");
+            System.out.println("Sorry, an error occurred 1. ");
         }
     }
 
@@ -81,10 +75,27 @@ public class Store {
                                        ArrayList<Product> cart,
                                        Scanner scanner) {
 
-     //   System.out.println("\n ==== Available Products ==== ");
-        //for (Product product : inventory) {
-     //       System.out.println(product);
-    //    }
+       System.out.println("\n ==== Available Products ==== ");
+        for (Product product : inventory) {
+            System.out.printf("SKU: %-8s | Name: %30s | Price: $%.2f | Dept: %s\n",
+                    product.getSKU(), product.getProductName(), product.getProductPrice(), product.getDepartment());
+        }
+        while (true) {
+            System.out.println("\nEnter the SKU of the product to add to cart (press 'x' to go back: )");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("X")) {
+                return;
+            }
+
+            Product selectedProduct = findProductById(input, inventory);
+            if (selectedProduct != null) {
+                cart.add(selectedProduct);
+                System.out.println("\"" + selectedProduct.getProductName() + "\" has been added to your cart.");
+            }else {
+                System.out.println("Sorry, SKU not found. Please try again: ");
+            }
+        }
     }
 
     /**
