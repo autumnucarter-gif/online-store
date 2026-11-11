@@ -98,29 +98,41 @@ public class Store {
         }
     }
 
-    /**
-     * Shows the contents of the cart, calculates the total,
-     * and offers the option to check out.
-     */
+
     public static void displayCart(ArrayList<Product> cart, Scanner scanner) {
-        // TODO:
-        //   • list each product in the cart
-        //   • compute the total cost
-        //   • ask the user whether to check out (C) or return (X)
-        //   • if C, call checkOut(cart, totalAmount, scanner)
+      while (true) {
+          System.out.printf("\n===== Your Shopping Cart =====");
+          if (cart.isEmpty()) {
+              System.out.println("Cart is currently empty!");
+              System.out.println("Press enter to return to Main Menu: ");
+              scanner.nextLine();
+              return;
+          }
+
+          double totalAmount = 0.0;
+          for (Product product : cart) {
+              System.out.printf("- %-30s : $%.2f\n", product.getProductName(), product.getProductPrice());
+              totalAmount += product.getProductPrice();
+          }
+          System.out.printf("Total Cost: $%.2f\n", totalAmount);
+
+          System.out.print("\nSelect an option: [C] to continue to Check Out or [X] to return to Main Menu: ");
+          String option = scanner.nextLine().trim().toUpperCase();
+
+          if (option.equals("C")) {
+              checkOut(cart, totalAmount, scanner);
+              return;
+          } else if (option.equals("X")) {
+              return;
+          }else {
+              System.out.println("Invalid option. Please enter C or X: ");
+          }
+      }
     }
 
-    /**
-     * Handles the checkout process:
-     * 1. Confirm that the user wants to buy.
-     * 2. Accept payment and calculate change.
-     * 3. Display a simple receipt.
-     * 4. Clear the cart.
-     */
     public static void checkOut(ArrayList<Product> cart,
                                 double totalAmount,
                                 Scanner scanner) {
-        // TODO: implement steps listed above
     }
 
     /**
