@@ -10,7 +10,7 @@ public class Product {
         this.SKU = SKU;
         this.productName = productName;
         this.productPrice = productPrice;
-        department = department;
+        this.department = department;
     }
 
     public String getSKU() {

@@ -1,8 +1,8 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -64,6 +64,7 @@ public class Store {
                     String productName = token[1].trim();
                     double productPrice = Double.parseDouble(token[2].trim());
                     String department = token[3].trim();
+                    inventory.add(new Product(SKU, productName, productPrice, department));
                 }
             }
         } catch (Exception e) {
@@ -133,15 +134,90 @@ public class Store {
     public static void checkOut(ArrayList<Product> cart,
                                 double totalAmount,
                                 Scanner scanner) {
-    }
+        System.out.printf("\nYour final balance due is: $%.2f\n", totalAmount);
+        System.out.print("Confirm checkout? (Y/N): ");
+        String confirmation = scanner.nextLine().trim().toUpperCase();
 
-    /**
-     * Searches a list for a product by its id.
-     *
-     * @return the matching Product, or null if not found
-     */
-    public static Product findProductById(String id, ArrayList<Product> inventory) {
-        // TODO: loop over the list and compare ids
+        if (!confirmation.equals("Y")) {
+            System.out.println("Checkout canceled. Returning to cart. ");
+            return;
+        }
+        double amountPaid = -1.0;
+        while (amountPaid < totalAmount) {
+            System.out.println("Enter your cash payment amount: $");
+            if (!scanner.hasNextDouble()) {
+                System.out.println("Invalid currency value. Please try again: ");
+                scanner.nextLine();
+                continue;
+            }
+            amountPaid = scanner.nextDouble();
+            scanner.nextLine();
+
+            if (amountPaid < totalAmount) {
+                System.out.printf("Insufficient cash. You still owe  $%.2f\n",(totalAmount - amountPaid));
+            }
+        }
+        double change = amountPaid - totalAmount;
+
+
+        System.out.println("\n========================================\n");
+        System.out.println("             ONLINE STORE               \n");
+        System.out.println("========================================\n");
+        for (Product product : cart) {
+            System.out.printf("%-25s $%-10.2f\n", product.getProductName(), product.getProductPrice());
+        }
+
+        System.out.println("----------------------------------------\n");
+        System.out.printf("%-25s $%-10.2f\n", "TOTAL OWED:", totalAmount);
+        System.out.printf("%-25s $%-10.2f\n", "CASH PAID:", amountPaid);
+        System.out.printf("%-25s $%-10.2f\n", "CHANGE GIVEN:", change);
+        System.out.println("========================================\n");
+        System.out.println("        THANK YOU FOR SHOPPING!         \n");
+        System.out.println("========================================\n");
+
+        //logReceipt(cart, totalAmount, amountPaid, change);
+        cart.clear();
+
+    }
+    /*public static Product findProductById(String id, ArrayList<Product> inventory) {
+        for (Product product : inventory) {
+            if (product.getSKU().equalsIgnoreCase(id.trim())) {
+                return product;
+            }
+        }
         return null;
     }
+    /*public static void logReceipt(ArrayList<Product> cart,
+                                  double totalAmount,
+                                  double amountPaid,
+                                  double change) {
+
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMDddHHmm");
+            String fileName = "Receipts" + now.format(formatter) + ".txt";
+
+
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName));
+
+            bufferedWriter.write("========================================\n");
+            bufferedWriter.write("              SALES RECEIPT            \n");
+            bufferedWriter.write("========================================\n");
+            for (Product product : cart) {
+                bufferedWriter.write(String.format("%-30s $%.2f\n", product.getProductPrice(), product.getProductPrice()));
+            }
+            bufferedWriter.write("----------------------------------------\n");
+            bufferedWriter.write(String.format("Subtotal Due: $%.2f\n", totalAmount));
+            bufferedWriter.write(String.format("Cash Tendered: $%.2f\n", amountPaid));
+            bufferedWriter.write(String.format("Change Returned: $%.2f\n", change));
+            bufferedWriter.write("========================================\n");
+            bufferedWriter.write(" Thank you for your purchase! \n");
+
+            bufferedWriter.close();
+            System.out.println("Receipt saved to: " + fileName + "! ");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 }
