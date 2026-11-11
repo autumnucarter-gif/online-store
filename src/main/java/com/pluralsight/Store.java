@@ -204,7 +204,7 @@ public class Store {
             bufferedWriter.write("              SALES RECEIPT            \n");
             bufferedWriter.write("========================================\n");
             for (Product product : cart) {
-                bufferedWriter.write(String.format("%-30s $%.2f\n", product.getProductPrice(), product.getProductPrice()));
+                bufferedWriter.write(String.format("%-30s $%.2f\n", product.getProductName(), product.getProductPrice()));
             }
             bufferedWriter.write("----------------------------------------\n");
             bufferedWriter.write(String.format("Subtotal Due: $%.2f\n", totalAmount));
