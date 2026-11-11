@@ -187,7 +187,7 @@ public class Store {
         }
         return null;
     }
-    /*public static void logReceipt(ArrayList<Product> cart,
+    public static void logReceipt(ArrayList<Product> cart,
                                   double totalAmount,
                                   double amountPaid,
                                   double change) {
@@ -219,5 +219,5 @@ public class Store {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }
 }
