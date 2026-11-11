@@ -175,7 +175,7 @@ public class Store {
         System.out.println("        THANK YOU FOR SHOPPING!         \n");
         System.out.println("========================================\n");
 
-        //logReceipt(cart, totalAmount, amountPaid, change);
+        logReceipt(cart, totalAmount, amountPaid, change);
         cart.clear();
 
     }
